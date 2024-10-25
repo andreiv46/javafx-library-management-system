@@ -1,12 +1,12 @@
 package org.ardeu.librarymanagementsystem.entities.book;
 
-import java.io.Serializable;
+import org.ardeu.librarymanagementsystem.entities.base.BaseEntity;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Book implements Serializable {
-    private UUID id;
+public class Book extends BaseEntity {
     private String title;
     private String description;
     private LocalDate publishDate;
@@ -14,16 +14,12 @@ public class Book implements Serializable {
     private UUID genreId;
 
     private Book(BookBuilder builder) {
-        this.id = builder.id;
+        super(builder.id);
         this.title = builder.title;
         this.description = builder.description;
         this.publishDate = builder.publishDate;
         this.authorId = builder.authorId;
         this.genreId = builder.genreId;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public String getTitle() {

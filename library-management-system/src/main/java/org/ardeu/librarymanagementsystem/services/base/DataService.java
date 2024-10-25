@@ -1,4 +1,4 @@
-package org.ardeu.librarymanagementsystem.services;
+package org.ardeu.librarymanagementsystem.services.base;
 
 import java.io.IOException;
 

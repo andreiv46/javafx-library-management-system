@@ -1,28 +1,20 @@
 package org.ardeu.librarymanagementsystem.entities.member;
 
-import java.io.Serializable;
+import org.ardeu.librarymanagementsystem.entities.base.BaseEntity;
+
 import java.util.HashSet;
 import java.util.UUID;
 
-public class Member implements Serializable {
-    private UUID id;
+public class Member extends BaseEntity {
     private String name;
     private String email;
     private HashSet<UUID> loans;
 
     public Member(UUID id, String name, String email, HashSet<UUID> loans) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.email = email;
         this.loans = loans;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getName() {

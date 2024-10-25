@@ -1,15 +1,17 @@
 package org.ardeu.librarymanagementsystem.entities.inventory;
 
-import java.io.Serializable;
+import org.ardeu.librarymanagementsystem.entities.base.BaseEntity;
+
 import java.util.UUID;
 
-public class Inventory implements Serializable {
+public class Inventory extends BaseEntity {
     private UUID bookid;
     private int availableCopies;
     private int totalCopies;
     private double price;
 
-    public Inventory(UUID bookid, int availableCopies, int totalCopies, double price) {
+    public Inventory(UUID id, UUID bookid, int availableCopies, int totalCopies, double price) {
+        super(id);
         this.bookid = bookid;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
@@ -51,7 +53,8 @@ public class Inventory implements Serializable {
     @Override
     public String toString() {
         return "Inventory{" +
-                "bookid=" + bookid +
+                "id=" + id +
+                ", bookid=" + bookid +
                 ", availableCopies=" + availableCopies +
                 ", totalCopies=" + totalCopies +
                 ", price=" + price +

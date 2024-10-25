@@ -1,31 +1,31 @@
 package org.ardeu.librarymanagementsystem.fileio.handlers;
 
-import org.ardeu.librarymanagementsystem.entities.book.Book;
-import org.ardeu.librarymanagementsystem.entities.book.mappers.BookToCSVMapper;
-import org.ardeu.librarymanagementsystem.entities.book.mappers.CSVToBookMapper;
+import org.ardeu.librarymanagementsystem.entities.loan.Loan;
+import org.ardeu.librarymanagementsystem.entities.loan.mappers.CSVToLoanMapper;
+import org.ardeu.librarymanagementsystem.entities.loan.mappers.LoanToCSVMapper;
 import org.ardeu.librarymanagementsystem.fileio.base.FileHandler;
 
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
 
-public class BookFileHandler extends FileHandler<Book> {
+public class LoanFileHandler extends FileHandler<Loan> {
 
-    private final CSVToBookMapper csvToBookMapper;
-    private final BookToCSVMapper bookToCSVMapper;
+    private final LoanToCSVMapper loanToCSVMapper;
+    private final CSVToLoanMapper csvToLoanMapper;
 
-    public BookFileHandler(String fileName) {
+    public LoanFileHandler(String fileName) {
         super(fileName);
-        this.csvToBookMapper = new CSVToBookMapper();
-        this.bookToCSVMapper = new BookToCSVMapper();
+        this.loanToCSVMapper = new LoanToCSVMapper();
+        this.csvToLoanMapper = new CSVToLoanMapper();
     }
 
     @Override
-    public List<Book> readFromFile() throws IOException {
+    public List<Loan> readFromFile() throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.getFileName())))) {
             return reader
                     .lines()
-                    .map(this.csvToBookMapper)
+                    .map(this.csvToLoanMapper)
                     .toList();
         }
         catch (EOFException e){
@@ -34,10 +34,10 @@ public class BookFileHandler extends FileHandler<Book> {
     }
 
     @Override
-    public void writeToFile(List<Book> list) throws IOException {
+    public void writeToFile(List<Loan> list) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFileName())))) {
             list.stream()
-                    .map(this.bookToCSVMapper)
+                    .map(this.loanToCSVMapper)
                     .forEach(line -> {
                         try {
                             writer.write(line);

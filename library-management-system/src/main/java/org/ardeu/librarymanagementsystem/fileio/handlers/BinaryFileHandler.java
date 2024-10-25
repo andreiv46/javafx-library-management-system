@@ -1,6 +1,6 @@
 package org.ardeu.librarymanagementsystem.fileio.handlers;
 
-import org.ardeu.librarymanagementsystem.fileio.baseio.FileHandler;
+import org.ardeu.librarymanagementsystem.fileio.base.FileHandler;
 
 import java.io.*;
 import java.util.Collections;

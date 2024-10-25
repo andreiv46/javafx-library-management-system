@@ -1,30 +1,22 @@
 package org.ardeu.librarymanagementsystem.entities.loan;
 
-import java.io.Serializable;
+import org.ardeu.librarymanagementsystem.entities.base.BaseEntity;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Loan implements Serializable {
-    private UUID id;
+public class Loan extends BaseEntity {
     private UUID memberId;
     private UUID bookId;
     private LocalDate loanDate;
     private LocalDate dueDate;
 
     public Loan(UUID id, UUID memberId, UUID bookId, LocalDate loanDate, LocalDate dueDate) {
-        this.id = id;
+        super(id);
         this.memberId = memberId;
         this.bookId = bookId;
         this.loanDate = loanDate;
         this.dueDate = dueDate;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public UUID getMemberId() {

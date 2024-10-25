@@ -1,26 +1,19 @@
 package org.ardeu.librarymanagementsystem.entities.author;
 
-import java.io.Serializable;
+import org.ardeu.librarymanagementsystem.entities.base.BaseEntity;
+import org.ardeu.librarymanagementsystem.entities.book.Book;
+
 import java.util.HashSet;
 import java.util.UUID;
 
-public class Author implements Serializable {
-    private UUID id;
+public class Author extends BaseEntity {
     private String name;
     private HashSet<UUID> books;
 
     public Author(UUID id, String name, HashSet<UUID> books) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.books = books;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -46,5 +39,9 @@ public class Author implements Serializable {
                 ", name='" + name + '\'' +
                 ", books=" + books +
                 '}';
+    }
+
+    public void addBook(Book book) {
+        this.books.add(book.getId());
     }
 }

@@ -1,38 +1,36 @@
 package org.ardeu.librarymanagementsystem.services;
 
 import org.ardeu.librarymanagementsystem.entities.author.Author;
-import org.ardeu.librarymanagementsystem.fileio.baseio.FileHandler;
+import org.ardeu.librarymanagementsystem.entities.book.Book;
+import org.ardeu.librarymanagementsystem.entities.genre.Genre;
+import org.ardeu.librarymanagementsystem.fileio.base.FileHandler;
+import org.ardeu.librarymanagementsystem.services.base.Service;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
-public class AuthorService implements DataService{
-    private Map<UUID, Author> authors;
-    private final FileHandler<Author> fileHandler;
+public class AuthorService extends Service<Author> {
+
+    private static final Logger logger = Logger.getLogger(AuthorService.class.getName());
 
     public AuthorService(FileHandler<Author> fileHandler) {
-        this.fileHandler = fileHandler;
-        this.authors = new HashMap<>();
+        super(fileHandler);
+        logger.info("Initialized author service");
     }
 
-    @Override
-    public void save() throws IOException {
-        this.fileHandler.writeToFile(authors.values().stream().toList());
+    public void addAuthor(Author author){
+        super.items.putIfAbsent(author.getId(), author);
     }
 
-    @Override
-    public void load() throws IOException {
-        this.authors = this.fileHandler
-                .readFromFile()
-                .stream()
-                .collect(Collectors.toMap(Author::getId, Function.identity()));
+    public void removeAuthor(UUID id){
+        super.items.remove(id);
     }
 
-    public Map<UUID, Author> getAuthors() {
-        return authors;
+    public void addBook(UUID authorId, Book book) {
+        Author author = super.items.get(authorId);
+        if(Objects.nonNull(author)){
+            author.addBook(book);
+        }
     }
 }

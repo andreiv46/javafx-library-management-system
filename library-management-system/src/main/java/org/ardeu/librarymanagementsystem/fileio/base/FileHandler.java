@@ -1,4 +1,4 @@
-package org.ardeu.librarymanagementsystem.fileio.baseio;
+package org.ardeu.librarymanagementsystem.fileio.base;
 
 import java.io.IOException;
 import java.util.List;
