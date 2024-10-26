@@ -3,7 +3,11 @@ package org.ardeu.librarymanagementsystem;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.ardeu.librarymanagementsystem.viewcontrollers.HomeViewController;
+import org.ardeu.librarymanagementsystem.viewcontrollers.Screen1Controller;
+import org.ardeu.librarymanagementsystem.viewcontrollers.ScreenController;
 import org.ardeu.librarymanagementsystem.entities.author.Author;
 import org.ardeu.librarymanagementsystem.entities.book.Book;
 import org.ardeu.librarymanagementsystem.fileio.config.FilePathConfig;
@@ -11,7 +15,7 @@ import org.ardeu.librarymanagementsystem.fileio.handlers.BinaryFileHandler;
 import org.ardeu.librarymanagementsystem.fileio.handlers.BookFileHandler;
 import org.ardeu.librarymanagementsystem.fileio.handlers.InventoryFileHandler;
 import org.ardeu.librarymanagementsystem.fileio.handlers.LoanFileHandler;
-import org.ardeu.librarymanagementsystem.managers.BookManager;
+import org.ardeu.librarymanagementsystem.controllers.BookController;
 import org.ardeu.librarymanagementsystem.services.*;
 import org.ardeu.librarymanagementsystem.services.registry.ServiceRegistry;
 
@@ -23,11 +27,33 @@ import java.util.UUID;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+
+        //loading the views
+        FXMLLoader homeFxmlLoader = new FXMLLoader(HelloApplication.class.getResource("home-view.fxml"));
+        Pane homeView = homeFxmlLoader.load();
+
+        FXMLLoader screen1FxmlLoader = new FXMLLoader(HelloApplication.class.getResource("screen1-view.fxml"));
+        Pane screen1View = screen1FxmlLoader.load();
+
+        //setting the main scene
+        Scene scene = new Scene(homeView);
+        stage.setTitle("Library Management System");
         stage.setScene(scene);
 
+
+        //add screens to scene controlelr
+        ScreenController screenController = new ScreenController(scene);
+        screenController.addScreen("home", homeView);
+        screenController.addScreen("screen1", screen1View);
+
+        //screenController DI
+        HomeViewController homeViewController = homeFxmlLoader.getController();
+        homeViewController.setScreenController(screenController);
+
+        Screen1Controller screen1Controller = screen1FxmlLoader.getController();
+        screen1Controller.setScreenController(screenController);
+
+        //on close
         stage.setOnCloseRequest(_ -> {
             BookService bookService = ServiceRegistry.getInstance().getService(BookService.class);
             AuthorService authorService = ServiceRegistry.getInstance().getService(AuthorService.class);
@@ -47,7 +73,7 @@ public class HelloApplication extends Application {
 
         configureServices();
 
-        BookManager manager = new BookManager();
+        BookController manager = new BookController();
         UUID authorId = UUID.randomUUID();
         UUID genreId = UUID.randomUUID();
 
@@ -69,7 +95,7 @@ public class HelloApplication extends Application {
                 .build();
 
         AuthorService authorService = ServiceRegistry.getInstance().getService(AuthorService.class);
-        authorService.add(new Author(authorId, "Ionel Gamer", new HashSet<>()));
+        authorService.add(new Author(authorId, "Daniel", new HashSet<>()));
         manager.addBook(book1, genreId, authorId, 100, 20.40);
         manager.addBook(book2, genreId, authorId, 100, 20.40);
         manager.addBook(book3, genreId, authorId, 100, 20.40);

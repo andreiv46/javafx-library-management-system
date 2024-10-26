@@ -1,4 +1,4 @@
-package org.ardeu.librarymanagementsystem;
+package org.ardeu.librarymanagementsystem.viewcontrollers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
@@ -13,10 +13,15 @@ import org.ardeu.librarymanagementsystem.services.registry.ServiceRegistry;
 
 import java.util.UUID;
 
-public class HelloController {
+public class HomeViewController {
 
+    private ScreenController screenController;
     private final AuthorService authorService = ServiceRegistry.getInstance().getService(AuthorService.class);
+
     private ObservableList<String> authorNames;
+
+    @FXML
+    public Button screen2Btn;
 
     @FXML
     public ListView<String> authorLV;
@@ -27,23 +32,21 @@ public class HelloController {
     @FXML
     private Label welcomeText;
 
+    public void setScreenController(ScreenController screenController) {
+        this.screenController = screenController;
+    }
+
     @FXML
     public void initialize() {
-        // Load authors from file
-//            authorService.load();
-
-        // Convert the authors map values to an ObservableList
 
         this.authorNames = FXCollections.observableArrayList(
                 authorService.getItems().values().stream()
-                        .map(Author::getName) // Assuming Author has a getName() method
+                        .map(Author::getName)
                         .toList()
         );
 
-        // Set the list of author names to the ListView
         authorLV.setItems(this.authorNames);
 
-        // Listen for changes in the map to update the ListView
         authorService.getItems().addListener((MapChangeListener<UUID, Author>) change -> {
             if(change.wasAdded()){
                 authorNames.add(change.getValueAdded().getName());
@@ -62,5 +65,9 @@ public class HelloController {
     public void onAddAuthorClick() {
         Author author = new Author(UUID.randomUUID(), "Alex", null);
         this.authorService.addAuthor(author);
+    }
+
+    public void onClickScreen2Btn() {
+        screenController.activate("screen1");
     }
 }

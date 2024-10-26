@@ -1,4 +1,4 @@
-package org.ardeu.librarymanagementsystem.managers;
+package org.ardeu.librarymanagementsystem.controllers;
 
 import org.ardeu.librarymanagementsystem.entities.book.Book;
 import org.ardeu.librarymanagementsystem.entities.inventory.Inventory;
@@ -10,7 +10,7 @@ import org.ardeu.librarymanagementsystem.services.registry.ServiceRegistry;
 
 import java.util.UUID;
 
-public class BookManager {
+public class BookController {
     private final BookService bookService = ServiceRegistry.getInstance().getService(BookService.class);
     private final AuthorService authorService = ServiceRegistry.getInstance().getService(AuthorService.class);
     private final GenreService genreService = ServiceRegistry.getInstance().getService(GenreService.class);

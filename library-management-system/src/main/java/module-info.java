@@ -6,4 +6,6 @@ module org.ardeu.librarymanagementsystem {
 
     opens org.ardeu.librarymanagementsystem to javafx.fxml;
     exports org.ardeu.librarymanagementsystem;
+    exports org.ardeu.librarymanagementsystem.viewcontrollers;
+    opens org.ardeu.librarymanagementsystem.viewcontrollers to javafx.fxml;
 }
