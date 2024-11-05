@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="30.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ardeu.librarymanagementsystem.ui.viewcontrollers.member.AddMemberViewController">
+    <Label text="Add Member">
+        <font>
+            <Font size="48.0" />
+        </font>
+    </Label>
+    <VBox alignment="CENTER">
+        <MFXTextField fx:id="nameInput" floatMode="ABOVE" floatingText="Name" prefHeight="30.0" prefWidth="200.0" />
+        <Label fx:id="nameValidationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" textFill="#ef6e6b" visible="false" wrapText="true" />
+    </VBox>
+    <VBox alignment="CENTER">
+        <MFXTextField fx:id="emailInput" floatMode="ABOVE" floatingText="Email" prefHeight="30.0" prefWidth="200.0" />
+        <Label fx:id="emailValidationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" textFill="#ef6e6b" visible="false" wrapText="true" />
+    </VBox>
+    <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0" spacing="50.0">
+        <Button fx:id="addGenreBtn" mnemonicParsing="false" text="Add" />
+        <Button fx:id="cancelBtn" mnemonicParsing="false" text="Cancel" />
+    </HBox>
+</VBox>

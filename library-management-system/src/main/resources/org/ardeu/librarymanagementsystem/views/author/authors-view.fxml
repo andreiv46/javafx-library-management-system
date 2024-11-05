@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      alignment="CENTER"
+      prefHeight="669.0"
+      prefWidth="1208.0"
+      spacing="20.0"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.ardeu.librarymanagementsystem.ui.viewcontrollers.author.AuthorsViewController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="1168.0" spacing="0.5">
+        <MFXTextField fx:id="authorInput" floatMode="ABOVE" floatingText="Author Name"/>
+    </HBox>
+    <TableView fx:id="authorsTable" prefHeight="442.0" prefWidth="1168.0"/>
+</VBox>
