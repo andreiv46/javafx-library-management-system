@@ -5,11 +5,38 @@ import org.ardeu.librarymanagementsystem.domain.entities.base.BaseEntity;
 import java.util.HashSet;
 import java.util.UUID;
 
+/**
+ * Represents a member in the library system.
+ * <p>
+ * A member has a unique identifier, a name, an email, and a set of loan records
+ * that track the books they have borrowed.
+ */
 public class Member extends BaseEntity {
+    /**
+     * The name of the member.
+     */
     private String name;
+
+    /**
+     * The email address of the member.
+     */
     private String email;
+
+    /**
+     * The set of loan records associated with the member.
+     * This field stores a collection of loan UUIDs that represent the books
+     * borrowed by the member.
+     */
     private HashSet<UUID> loans;
 
+    /**
+     * Constructs a Member instance.
+     *
+     * @param id the unique identifier for the member
+     * @param name the name of the member
+     * @param email the email address of the member
+     * @param loans a set of UUIDs representing the loans the member has made
+     */
     public Member(UUID id, String name, String email, HashSet<UUID> loans) {
         super(id);
         this.name = name;

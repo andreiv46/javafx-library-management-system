@@ -2,9 +2,14 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.CheckComboBox?>
+
 <VBox alignment="CENTER"
       prefHeight="669.0"
       prefWidth="1208.0"
@@ -13,12 +18,30 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.ardeu.librarymanagementsystem.ui.viewcontrollers.book.BooksViewController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
     </padding>
-    <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="1168.0" spacing="0.5">
-        <MFXTextField fx:id="titleInput" floatMode="ABOVE" floatingText="Title"/>
-        <MFXTextField fx:id="authorInput" floatMode="ABOVE" floatingText="Author"/>
-        <MFXTextField fx:id="genreInput" floatMode="ABOVE" floatingText="Genre"/>
-    </HBox>
-    <TableView fx:id="booksTable" prefHeight="442.0" prefWidth="1168.0"/>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <MFXTextField fx:id="titleInput" floatMode="ABOVE" floatingText="Title" prefWidth="100"/>
+        <MFXTextField fx:id="authorInput" floatMode="ABOVE" floatingText="Author" prefWidth="100"
+                      GridPane.columnIndex="1"/>
+        <MFXTextField fx:id="genreInput" floatMode="ABOVE" floatingText="Genre" prefWidth="100"
+                      GridPane.columnIndex="2"/>
+        <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="3">
+            <CheckComboBox fx:id="exportBookFieldsTv"/>
+            <Button fx:id="exportBtn" mnemonicParsing="false" text="Export to CSV"/>
+        </VBox>
+        <padding>
+            <Insets bottom="20.0" top="30.0"/>
+        </padding>
+    </GridPane>
+    <TableView fx:id="booksTable" prefHeight="495.0" prefWidth="1168.0"/>
 </VBox>

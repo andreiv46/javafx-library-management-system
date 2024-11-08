@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import org.ardeu.librarymanagementsystem.domain.controllers.MemberController;
 import org.ardeu.librarymanagementsystem.domain.controllers.result.Result;
 import org.ardeu.librarymanagementsystem.domain.entities.member.Member;
-import org.ardeu.librarymanagementsystem.domain.entities.member.MemberDTO;
+import org.ardeu.librarymanagementsystem.domain.entities.member.MemberCreationDTO;
 import org.ardeu.librarymanagementsystem.domain.validators.member.MemberDTOValidator;
 import org.ardeu.librarymanagementsystem.ui.components.ErrorAlert;
 import org.ardeu.librarymanagementsystem.ui.components.SuccessAlert;
@@ -21,6 +21,9 @@ import java.util.List;
 
 import static io.github.palexdev.materialfx.validation.Validated.INVALID_PSEUDO_CLASS;
 
+/**
+ * AddMemberViewController is responsible for managing the UI and logic for adding a new member.
+ */
 public class AddMemberViewController {
 
     private ScreenViewController screenViewController;
@@ -44,6 +47,9 @@ public class AddMemberViewController {
     @FXML
     public Label emailValidationLabel;
 
+    /**
+     * Initializes the AddMemberViewController.
+     */
     @FXML
     public void initialize() {
         initializeNameInputValidation();
@@ -53,6 +59,9 @@ public class AddMemberViewController {
         cancelBtn.setOnAction(_ -> onCancel());
     }
 
+    /**
+     * Handles the cancel action, clearing input fields and navigating back to the members screen.
+     */
     private void onCancel() {
         nameInput.clear();
         emailInput.clear();
@@ -61,6 +70,9 @@ public class AddMemberViewController {
         screenViewController.activate(ScreenName.MEMBERS);
     }
 
+    /**
+     * Initializes validation for the name input field.
+     */
     private void initializeNameInputValidation() {
         Constraint lengthConstraint = Constraint.Builder.build()
                 .setSeverity(Severity.ERROR)
@@ -89,6 +101,9 @@ public class AddMemberViewController {
         });
     }
 
+    /**
+     * Initializes validation for the email input field.
+     */
     private void initializeEmailInputValidation() {
         Constraint emailConstraint = Constraint.Builder.build()
                 .setSeverity(Severity.ERROR)
@@ -119,8 +134,11 @@ public class AddMemberViewController {
         });
     }
 
+    /**
+     * Adds a new member using the provided input data.
+     */
     private void addMember() {
-        Result<Member> result = memberController.addMember(new MemberDTO(nameInput.getText(), emailInput.getText()));
+        Result<Member> result = memberController.addMember(new MemberCreationDTO(nameInput.getText(), emailInput.getText()));
         if (result.isSuccess()) {
             showSuccessMessage(
                     "Member added", "Member with name: " +
@@ -133,20 +151,40 @@ public class AddMemberViewController {
         }
     }
 
+    /**
+     * Constructs an AddMemberViewController and initializes the MemberController.
+     */
     public AddMemberViewController() {
         memberController = new MemberController();
     }
 
+    /**
+     * Sets the ScreenViewController for this controller.
+     *
+     * @param screenViewController the ScreenViewController to set
+     */
     public void setScreenViewController(ScreenViewController screenViewController) {
         this.screenViewController = screenViewController;
     }
 
+    /**
+     * Displays an error message using an ErrorAlert.
+     *
+     * @param message the title of the error message
+     * @param content the content of the error message
+     */
     private void showErrorMessage(String message, String content){
         ErrorAlert errorAlert = new ErrorAlert(message);
         errorAlert.setContent(content);
         errorAlert.showAlert();
     }
 
+    /**
+     * Displays a success message using a SuccessAlert.
+     *
+     * @param message the title of the success message
+     * @param content the content of the success message
+     */
     private void showSuccessMessage(String message, String content){
         SuccessAlert successAlert = new SuccessAlert(message);
         successAlert.setContent(content);

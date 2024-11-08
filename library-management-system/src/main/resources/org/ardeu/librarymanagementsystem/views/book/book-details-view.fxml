@@ -36,40 +36,34 @@
          <Insets />
       </VBox.margin></TextArea>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
-        <children>
-            <VBox prefHeight="100.0" prefWidth="250.0" spacing="10.0">
-                <children>
-                    <HBox>
-                        <Label text="Author: " />
-                        <Label fx:id="authorLabel" />
-                    </HBox>
-                    <HBox>
-                        <Label text="Genre: " />
-                        <Label fx:id="genreLabel" />
-                    </HBox>
-                    <HBox>
-                        <Label text="Publication Date: " />
-                        <Label fx:id="publishDateLabel" />
-                    </HBox>
-                </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="250.0" spacing="10.0">
-                <children>
-                    <HBox>
-                        <Label text="Available Copies: " />
-                        <Label fx:id="availableCopiesLabel" />
-                    </HBox>
-                    <HBox>
-                        <Label text="Total Copies: " />
-                        <Label fx:id="totalCopiesLabel" />
-                    </HBox>
-                    <HBox>
-                        <Label text="Price: " />
-                        <Label fx:id="priceLabel" />
-                    </HBox>
-                </children>
-            </VBox>
-        </children>
+        <VBox prefHeight="100.0" prefWidth="250.0" spacing="10.0">
+            <HBox>
+                <Label text="Author: "/>
+                <Label fx:id="authorLabel"/>
+            </HBox>
+            <HBox>
+                <Label text="Genre: "/>
+                <Label fx:id="genreLabel"/>
+            </HBox>
+            <HBox>
+                <Label text="Publication Date: "/>
+                <Label fx:id="publishDateLabel"/>
+            </HBox>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="250.0" spacing="10.0">
+            <HBox>
+                <Label text="Available Copies: "/>
+                <Label fx:id="availableCopiesLabel"/>
+            </HBox>
+            <HBox>
+                <Label text="Total Copies: "/>
+                <Label fx:id="totalCopiesLabel"/>
+            </HBox>
+            <HBox>
+                <Label text="Price: "/>
+                <Label fx:id="priceLabel"/>
+            </HBox>
+        </VBox>
     </HBox>
     <Button text="Edit" onAction="#handleEditButtonClick" />
 </VBox>

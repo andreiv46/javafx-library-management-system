@@ -14,6 +14,9 @@ import org.ardeu.librarymanagementsystem.domain.entities.inventory.Inventory;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenName;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenViewController;
 
+/**
+ * The controller for the BookDetailsView.
+ */
 public class BookDetailsViewController {
 
     @FXML
@@ -41,6 +44,11 @@ public class BookDetailsViewController {
     private ScreenViewController screenViewController;
     private Book book;
 
+    /**
+     * Sets the book details in the view.
+     *
+     * @param book the book to set
+     */
     public void setBook(Book book) {
         this.book = book;
         bookIdLabel.setText(String.valueOf(book.getId()));
@@ -77,10 +85,16 @@ public class BookDetailsViewController {
         }
     }
 
+    /**
+     * Handles the edit button click event.
+     */
     public void handleEditButtonClick() {
         handleEditBook();
     }
 
+    /**
+     * Handles the logic for editing a book.
+     */
     private void handleEditBook() {
         EditBookInformationView editBookInformationView =
                 (EditBookInformationView) screenViewController.getController(ScreenName.EDIT_BOOK_INFORMATION);
@@ -88,6 +102,11 @@ public class BookDetailsViewController {
         screenViewController.activate(ScreenName.EDIT_BOOK_INFORMATION);
     }
 
+    /**
+     * Sets the ScreenViewController for this controller.
+     *
+     * @param screenViewController the ScreenViewController to set
+     */
     public void setScreenViewController(ScreenViewController screenViewController) {
         this.screenViewController = screenViewController;
     }

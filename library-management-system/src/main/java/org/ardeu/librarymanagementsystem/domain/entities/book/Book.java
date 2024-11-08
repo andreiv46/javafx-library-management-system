@@ -6,12 +6,39 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Represents a book in the library management system.
+ * <p>
+ * This class uses the builder pattern for flexible object construction.
+ * </p>
+ *
+ * @see BaseEntity
+ */
 public class Book extends BaseEntity {
-    private String title;
-    private String description;
-    private LocalDate publishDate;
-    private UUID authorId;
-    private UUID genreId;
+    /**
+     * The title of the book.
+     */
+    private final String title;
+
+    /**
+     * A description of the book's content or theme.
+     */
+    private final String description;
+
+    /**
+     * The date the book was published.
+     */
+    private final LocalDate publishDate;
+
+    /**
+     * The id of the author who wrote the book.
+     */
+    private final UUID authorId;
+
+    /**
+     * The id of the genre associated with the book.
+     */
+    private final UUID genreId;
 
     private Book(BookBuilder builder) {
         super(builder.id);
@@ -54,6 +81,18 @@ public class Book extends BaseEntity {
                 '}';
     }
 
+    /**
+     * Indicates whether some other object is equal to this one.
+     * <p>
+     * This implementation compares {@code Book} objects based on the title,
+     * publish date, and author ID fields only, as they are considered sufficient
+     * for identifying a unique book.
+     * </p>
+     *
+     * @param o the object to compare this {@code Book} with for equality
+     * @return {@code true} if this object is the same as the {@code o} argument;
+     * {@code false} otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,15 +101,33 @@ public class Book extends BaseEntity {
         return Objects.equals(title, book.title) && Objects.equals(publishDate, book.publishDate) && Objects.equals(authorId, book.authorId);
     }
 
+    /**
+     * Returns a hash code value for this book.
+     * <p>
+     * This implementation generates the hash code based on the title, publish date,
+     * and author ID fields, as they are used in the {@code equals} method to establish
+     * equality.
+     * </p>
+     *
+     * @return a hash code value for this book
+     */
     @Override
     public int hashCode() {
         return Objects.hash(title, publishDate, authorId);
     }
 
+    /**
+     * Returns a new instance of the {@code BookBuilder} for constructing {@code Book} objects.
+     *
+     * @return a new {@code BookBuilder}
+     */
     public static BookBuilder builder(){
         return new BookBuilder();
     }
 
+    /**
+     * Builder class for {@link Book}. Allows flexible and readable construction of {@code Book} instances.
+     */
     public static class BookBuilder{
         private UUID id;
         private String title;
@@ -109,42 +166,13 @@ public class Book extends BaseEntity {
             return this;
         }
 
+        /**
+         * Builds a {@link Book} instance with the specified properties.
+         *
+         * @return a new {@code Book} instance
+         */
         public Book build(){
-            validate();
             return new Book(this);
-        }
-
-        private void validate() {
-            StringBuilder message = new StringBuilder();
-            this.id = Objects.requireNonNullElse(this.id, UUID.randomUUID());
-
-            if (Objects.isNull(this.title)) {
-                message.append("Title cannot be null\n");
-            } else if (this.title.length() < 2) {
-                message.append("Title must have at least 2 characters\n");
-            }
-
-            if (Objects.isNull(this.description)) {
-                message.append("Description cannot be null\n");
-            } else if (this.description.length() < 2) {
-                message.append("Description must have at least 2 characters\n");
-            }
-
-            if (Objects.isNull(this.authorId)) {
-                message.append("Author Id cannot be null\n");
-            }
-
-            if (Objects.isNull(this.genreId)) {
-                message.append("Genre Id cannot be null\n");
-            }
-
-            if(Objects.nonNull(this.publishDate) && this.publishDate.isAfter(LocalDate.now())){
-                message.append("Publish date must be greater than current date\n");
-            }
-
-            if(!message.isEmpty()){
-                throw new IllegalArgumentException(String.valueOf(message));
-            }
         }
     }
 }

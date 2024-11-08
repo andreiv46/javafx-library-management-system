@@ -2,9 +2,10 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.CheckComboBox?>
 <VBox xmlns="http://javafx.com/javafx"
       alignment="CENTER"
       prefHeight="669.0"
@@ -15,8 +16,22 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-    <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="1168.0" spacing="0.5">
-        <MFXTextField fx:id="authorInput" floatMode="ABOVE" floatingText="Author Name"/>
-    </HBox>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" halignment="LEFT"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <MFXTextField fx:id="authorInput" floatMode="ABOVE" floatingText="Name" prefWidth="150"/>
+        <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="1">
+            <CheckComboBox fx:id="exportAuthorsFieldsTv"/>
+            <Button fx:id="exportBtn" mnemonicParsing="false" text="Export to CSV"/>
+        </VBox>
+        <padding>
+            <Insets bottom="20.0" top="30.0"/>
+        </padding>
+    </GridPane>
     <TableView fx:id="authorsTable" prefHeight="442.0" prefWidth="1168.0"/>
 </VBox>

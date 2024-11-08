@@ -1,6 +1,7 @@
 package org.ardeu.librarymanagementsystem.ui.viewcontrollers.book;
 
 import io.github.palexdev.materialfx.utils.others.FunctionalStringConverter;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -19,17 +20,22 @@ import org.ardeu.librarymanagementsystem.domain.controllers.GenreController;
 import org.ardeu.librarymanagementsystem.domain.controllers.result.Result;
 import org.ardeu.librarymanagementsystem.domain.entities.author.Author;
 import org.ardeu.librarymanagementsystem.domain.entities.book.Book;
-import org.ardeu.librarymanagementsystem.domain.entities.book.BookDTO;
+import org.ardeu.librarymanagementsystem.domain.entities.book.BookCreationDTO;
 import org.ardeu.librarymanagementsystem.domain.entities.genre.Genre;
 import org.ardeu.librarymanagementsystem.ui.components.ErrorAlert;
 import org.ardeu.librarymanagementsystem.ui.components.SuccessAlert;
+import org.ardeu.librarymanagementsystem.ui.viewcontrollers.author.AuthorsViewController;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenName;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenViewController;
+import org.ardeu.librarymanagementsystem.ui.viewcontrollers.genre.GenreViewController;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Controller for the Add Book screen
+ */
 public class AddBookViewController {
 
     private ScreenViewController screenViewController;
@@ -77,6 +83,9 @@ public class AddBookViewController {
     @FXML
     public TextField priceInput;
 
+    /**
+     * Constructs an AddBookViewController and initializes the necessary data structures.
+     */
     public AddBookViewController() {
         this.bookController = new BookController();
         this.authorController = new AuthorController();
@@ -89,22 +98,29 @@ public class AddBookViewController {
         this.genresList = FXCollections.observableArrayList(genres.values());
 
         this.authors.addListener((MapChangeListener<UUID, Author>) change -> {
-            if (change.wasAdded()) {
-                authorsList.add(change.getValueAdded());
-            } else if (change.wasRemoved()) {
-                authorsList.remove(change.getValueRemoved());
-            }
+            Platform.runLater(() -> {
+                if (change.wasAdded()) {
+                    authorsList.add(change.getValueAdded());
+                } else if (change.wasRemoved()) {
+                    authorsList.remove(change.getValueRemoved());
+                }
+            });
         });
 
         this.genres.addListener((MapChangeListener<UUID, Genre>) change -> {
-            if (change.wasAdded()) {
-                genresList.add(change.getValueAdded());
-            } else if (change.wasRemoved()) {
-                genresList.remove(change.getValueRemoved());
-            }
+            Platform.runLater(() -> {
+                if (change.wasAdded()) {
+                    genresList.add(change.getValueAdded());
+                } else if (change.wasRemoved()) {
+                    genresList.remove(change.getValueRemoved());
+                }
+            });
         });
     }
 
+    /**
+     * Initializes the controller and sets up the UI components.
+     */
     @FXML
     public void initialize() {
         initializeAuthorComboBox();
@@ -117,6 +133,9 @@ public class AddBookViewController {
         this.cancelBtn.setOnAction(_ -> screenViewController.activate(ScreenName.BOOKS));
     }
 
+    /**
+     * Initializes the price input field with validation.
+     */
     private void initializePriceInput() {
         priceInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) {
@@ -129,6 +148,9 @@ public class AddBookViewController {
         });
     }
 
+    /**
+     * Initializes the total copies input field with validation.
+     */
     private void initializeTotalCopiesInput() {
         totalCopiesInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -137,18 +159,27 @@ public class AddBookViewController {
         });
     }
 
+    /**
+     * Initializes the date input field with a prompt text and default value.
+     */
     private void initializeDateInput() {
         dateInput.setPromptText("Publication Date");
         dateInput.setValue(LocalDate.now());
     }
 
+    /**
+     * Initializes the description input field with wrap text enabled.
+     */
     private void initializeDescriptionInput() {
         descriptionInput.setWrapText(true);
     }
 
+    /**
+     * Adds a new book using the provided input data.
+     */
     private void addBook() {
-        String description = descriptionInput.getText();
         String title = titleInput.getText();
+        String description = descriptionInput.getText();
         Genre genre = genreInput.getValue();
         Author author = authorInput.getValue();
         LocalDate releaseDate = dateInput.getValue();
@@ -170,19 +201,34 @@ public class AddBookViewController {
             return;
         }
 
-        BookDTO bookDTO = new BookDTO(title, description, author.getId(), genre.getId(), releaseDate);
+        BookCreationDTO bookDTO = new BookCreationDTO(title, description, author.getId(), genre.getId(), releaseDate);
         Result<Book> result = this.bookController.addBook(bookDTO, totalCopies, price);
         if(result.isSuccess()){
             showSuccessMessage(
                     "Book added", "Book with title: " +
                     result.getData().getTitle() + " added successfully");
             clearFields();
+            updateData();
             screenViewController.activate(ScreenName.BOOKS);
         } else {
             showErrorMessage("Couldn't add book", result.getErrorMessage());
         }
     }
 
+    /**
+     * Updates the data in the authors and genres tables.
+     */
+    private void updateData() {
+        AuthorsViewController authorsViewController = (AuthorsViewController) screenViewController.getController(ScreenName.AUTHORS);
+        GenreViewController genreViewController = (GenreViewController) screenViewController.getController(ScreenName.GENRES);
+
+        authorsViewController.updateTable();
+        genreViewController.updateTable();
+    }
+
+    /**
+     * Clears all input fields.
+     */
     private void clearFields() {
         titleInput.clear();
         descriptionInput.clear();
@@ -193,6 +239,9 @@ public class AddBookViewController {
         priceInput.clear();
     }
 
+    /**
+     * Initializes the author combo box with a string converter.
+     */
     private void initializeAuthorComboBox() {
         StringConverter<Author> authorStringConverter =
                 FunctionalStringConverter.to(author -> (author == null) ? "" : author.getName());
@@ -200,6 +249,9 @@ public class AddBookViewController {
         this.authorInput.setItems(this.authorsList);
     }
 
+    /**
+     * Initializes the genre combo box with a string converter.
+     */
     private void initializeGenreComboBox() {
         StringConverter<Genre> genreStringConverter =
                 FunctionalStringConverter.to(genre -> (genre == null) ? "" : genre.getName());
@@ -207,16 +259,33 @@ public class AddBookViewController {
         this.genreInput.setItems(this.genresList);
     }
 
+    /**
+     * Sets the ScreenViewController for this controller.
+     *
+     * @param screenViewController the ScreenViewController to set
+     */
     public void setScreenViewController(ScreenViewController screenViewController) {
         this.screenViewController = screenViewController;
     }
 
+    /**
+     * Displays an error message using an ErrorAlert.
+     *
+     * @param message the title of the error message
+     * @param content the content of the error message
+     */
     private void showErrorMessage(String message, String content){
         ErrorAlert errorAlert = new ErrorAlert(message);
         errorAlert.setContent(content);
         errorAlert.showAlert();
     }
 
+    /**
+     * Displays a success message using a SuccessAlert.
+     *
+     * @param message the title of the success message
+     * @param content the content of the success message
+     */
     private void showSuccessMessage(String message, String content){
         SuccessAlert successAlert = new SuccessAlert(message);
         successAlert.setContent(content);

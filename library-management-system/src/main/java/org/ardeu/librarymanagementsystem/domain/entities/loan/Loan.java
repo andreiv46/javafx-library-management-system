@@ -1,19 +1,70 @@
 package org.ardeu.librarymanagementsystem.domain.entities.loan;
 
 import org.ardeu.librarymanagementsystem.domain.entities.base.BaseEntity;
+import org.ardeu.librarymanagementsystem.domain.entities.member.Member;
+import org.ardeu.librarymanagementsystem.domain.entities.book.Book;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Represents a loan transaction in the library management system.
+ * A loan consists of a member borrowing a book for a specified period and the associated loan details.
+ * <p>
+ *     This class extends {@link BaseEntity} to inherit common entity properties.
+ * </p>
+ * @see BaseEntity
+ * @see Book
+ * @see Member
+ */
 public class Loan extends BaseEntity {
+    /**
+     * The unique identifier of the member who borrowed the book.
+     */
     private UUID memberId;
+
+    /**
+     * The unique identifier of the book being loaned.
+     */
     private UUID bookId;
+
+    /**
+     * The price of the loan.
+     */
     private double price;
+
+    /**
+     * The date the loan was made.
+     */
     private LocalDate loanDate;
+
+    /**
+     * The due date for returning the loaned book.
+     */
     private LocalDate dueDate;
+
+    /**
+     * The actual date the book was returned. Null if not returned yet.
+     */
     private LocalDate returnDate;
+
+    /**
+     * The current status of the loan (e.g., active, completed, overdue).
+     */
     private LoanStatus status;
 
+    /**
+     * Constructs a new Loan with the specified parameters.
+     *
+     * @param id the unique identifier for the loan
+     * @param memberId the unique identifier of the member who borrowed the book
+     * @param bookId the unique identifier of the book being loaned
+     * @param price the price of the loan
+     * @param loanDate the date when the loan was made
+     * @param dueDate the due date for the book's return
+     * @param returnDate the actual return date of the book (null if not returned)
+     * @param status the current status of the loan
+     */
     public Loan(UUID id,
                 UUID memberId,
                 UUID bookId,

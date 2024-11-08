@@ -1,5 +1,8 @@
 package org.ardeu.librarymanagementsystem.domain.filerepository.config;
 
+/**
+ * FilePathConfig class contains constants for file paths used in the library management system.
+ */
 public class FilePathConfig {
     public static final String AUTHORS_PATH = "./data/authors.bin";
     public static final String BOOKS_PATH = "./data/books.txt";

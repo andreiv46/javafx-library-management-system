@@ -239,11 +239,11 @@ public class SampleData {
             memberService.add(member3);
 
             // Sample Inventory
-            Inventory inventory1 = new Inventory(UUID.randomUUID(), book1.getId(), 10, 10, 29.99);
-            Inventory inventory2 = new Inventory(UUID.randomUUID(), book2.getId(), 5, 5, 34.99);
-            Inventory inventory3 = new Inventory(UUID.randomUUID(), book3.getId(), 4, 5, 34.99);
-            Inventory inventory4 = new Inventory(UUID.randomUUID(), book4.getId(), 7, 7, 24.99);
-            Inventory inventory5 = new Inventory(UUID.randomUUID(), book5.getId(), 8, 8, 19.99);
+            Inventory inventory1 = new Inventory(UUID.randomUUID(), book1.getId(), 8, 10, 29.99);
+            Inventory inventory2 = new Inventory(UUID.randomUUID(), book2.getId(), 3, 5, 34.99);
+            Inventory inventory3 = new Inventory(UUID.randomUUID(), book3.getId(), 3, 5, 34.99);
+            Inventory inventory4 = new Inventory(UUID.randomUUID(), book4.getId(), 6, 7, 24.99);
+            Inventory inventory5 = new Inventory(UUID.randomUUID(), book5.getId(), 7, 8, 19.99);
             Inventory inventory6 = new Inventory(UUID.randomUUID(), book6.getId(), 12, 12, 39.99);
             Inventory inventory7 = new Inventory(UUID.randomUUID(), book7.getId(), 10, 10, 29.99);
             Inventory inventory8 = new Inventory(UUID.randomUUID(), book8.getId(), 6, 6, 34.99);
@@ -270,39 +270,63 @@ public class SampleData {
             inventoryService.add(inventory14);
 
             // Sample Loans
-            Loan loan1 = new Loan(UUID.randomUUID(), member1.getId(), book1.getId(), inventory1.getPrice(),
-                    LocalDate.of(2024, 10, 3),
-                    LocalDate.of(2024, 10, 3).plusDays(14),
-                    LocalDate.of(2024, 10, 5),
-                    LoanStatus.RETURNED
-            );
-            Loan loan2 = new Loan(UUID.randomUUID(), member1.getId(), book2.getId(), inventory2.getPrice(),
-                    LocalDate.of(2024, 10, 5),
-                    LocalDate.of(2024, 10, 5).plusDays(10),
-                    LocalDate.of(2024, 10, 15),
-                    LoanStatus.RETURNED
-            );
-            Loan loan3 = new Loan(UUID.randomUUID(), member2.getId(), book3.getId(), inventory3.getPrice(),
-                    LocalDate.of(2024, 10, 2),
-                    LocalDate.of(2024, 10, 2).plusDays(12),
-                    LocalDate.of(2024, 10, 2).plusDays(12),
-                    LoanStatus.RETURNED);
+            Loan[] loans = new Loan[]{
+                    // Active loans
+                    new Loan(UUID.randomUUID(), member1.getId(), book1.getId(), inventory1.getPrice(), LocalDate.of(2023, 12, 15), LocalDate.of(2023, 12, 15).plusDays(14), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member2.getId(), book2.getId(), inventory2.getPrice(), LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 1).plusDays(15), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member3.getId(), book3.getId(), inventory3.getPrice(), LocalDate.of(2024, 6, 10), LocalDate.of(2024, 6, 10).plusDays(14), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member1.getId(), book1.getId(), inventory1.getPrice(), LocalDate.of(2024, 11, 6), LocalDate.of(2024, 11, 6).plusDays(10), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member2.getId(), book2.getId(), inventory2.getPrice(), LocalDate.of(2024, 11, 7), LocalDate.of(2024, 11, 7).plusDays(12), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member3.getId(), book3.getId(), inventory3.getPrice(), LocalDate.of(2024, 11, 8), LocalDate.of(2024, 11, 8).plusDays(14), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member1.getId(), book4.getId(), inventory4.getPrice(), LocalDate.of(2024, 11, 9), LocalDate.of(2024, 11, 9).plusDays(10), null, LoanStatus.ACTIVE),
+                    new Loan(UUID.randomUUID(), member2.getId(), book5.getId(), inventory5.getPrice(), LocalDate.of(2024, 11, 10), LocalDate.of(2024, 11, 10).plusDays(13), null, LoanStatus.ACTIVE),
 
-            Loan loan4 = new Loan(UUID.randomUUID(), member2.getId(), book3.getId(), inventory3.getPrice(),
-                    LocalDate.now(),
-                    LocalDate.now().plusDays(14),
-                    null,
-                    LoanStatus.ACTIVE);
+                    // returned books
+                    new Loan(UUID.randomUUID(), member1.getId(), book4.getId(), inventory4.getPrice(), LocalDate.of(2023, 7, 1), LocalDate.of(2023, 7, 1).plusDays(12), LocalDate.of(2023, 7, 10), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book5.getId(), inventory5.getPrice(), LocalDate.of(2023, 8, 5), LocalDate.of(2023, 8, 5).plusDays(10), LocalDate.of(2023, 8, 14), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book6.getId(), inventory6.getPrice(), LocalDate.of(2023, 9, 12), LocalDate.of(2023, 9, 12).plusDays(8), LocalDate.of(2023, 9, 19), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book7.getId(), inventory7.getPrice(), LocalDate.of(2023, 10, 2), LocalDate.of(2023, 10, 2).plusDays(14), LocalDate.of(2023, 10, 16), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book8.getId(), inventory8.getPrice(), LocalDate.of(2023, 11, 10), LocalDate.of(2023, 11, 10).plusDays(15), LocalDate.of(2023, 11, 20), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book9.getId(), inventory9.getPrice(), LocalDate.of(2023, 12, 3), LocalDate.of(2023, 12, 3).plusDays(12), LocalDate.of(2023, 12, 15), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book10.getId(), inventory10.getPrice(), LocalDate.of(2024, 1, 15), LocalDate.of(2024, 1, 15).plusDays(10), LocalDate.of(2024, 1, 25), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book11.getId(), inventory11.getPrice(), LocalDate.of(2024, 2, 20), LocalDate.of(2024, 2, 20).plusDays(14), LocalDate.of(2024, 3, 5), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book12.getId(), inventory12.getPrice(), LocalDate.of(2024, 3, 5), LocalDate.of(2024, 3, 5).plusDays(10), LocalDate.of(2024, 3, 15), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book13.getId(), inventory13.getPrice(), LocalDate.of(2024, 4, 10), LocalDate.of(2024, 4, 10).plusDays(12), LocalDate.of(2024, 4, 22), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book14.getId(), inventory14.getPrice(), LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 1).plusDays(10), LocalDate.of(2024, 5, 10), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book1.getId(), inventory1.getPrice(), LocalDate.of(2024, 6, 3), LocalDate.of(2024, 6, 3).plusDays(14), LocalDate.of(2024, 6, 17), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book2.getId(), inventory2.getPrice(), LocalDate.of(2024, 7, 12), LocalDate.of(2024, 7, 12).plusDays(8), LocalDate.of(2024, 7, 20), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book3.getId(), inventory3.getPrice(), LocalDate.of(2024, 8, 25), LocalDate.of(2024, 8, 25).plusDays(12), LocalDate.of(2024, 9, 6), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book4.getId(), inventory4.getPrice(), LocalDate.of(2024, 9, 10), LocalDate.of(2024, 9, 10).plusDays(10), LocalDate.of(2024, 9, 20), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book5.getId(), inventory5.getPrice(), LocalDate.of(2024, 10, 1), LocalDate.of(2024, 10, 1).plusDays(14), LocalDate.of(2024, 10, 15), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book6.getId(), inventory6.getPrice(), LocalDate.of(2024, 11, 5), LocalDate.of(2024, 11, 5).plusDays(8), LocalDate.of(2024, 11, 13), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book6.getId(), inventory6.getPrice(), LocalDate.of(2023, 12, 5), LocalDate.of(2023, 12, 5).plusDays(9), LocalDate.of(2023, 12, 14), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book7.getId(), inventory7.getPrice(), LocalDate.of(2024, 1, 12), LocalDate.of(2024, 1, 12).plusDays(12), LocalDate.of(2024, 1, 24), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book8.getId(), inventory8.getPrice(), LocalDate.of(2024, 2, 18), LocalDate.of(2024, 2, 18).plusDays(8), LocalDate.of(2024, 2, 26), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book9.getId(), inventory9.getPrice(), LocalDate.of(2024, 3, 15), LocalDate.of(2024, 3, 15).plusDays(10), LocalDate.of(2024, 3, 25), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book10.getId(), inventory10.getPrice(), LocalDate.of(2024, 4, 10), LocalDate.of(2024, 4, 10).plusDays(14), LocalDate.of(2024, 4, 24), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book11.getId(), inventory11.getPrice(), LocalDate.of(2024, 5, 5), LocalDate.of(2024, 5, 5).plusDays(9), LocalDate.of(2024, 5, 14), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book12.getId(), inventory12.getPrice(), LocalDate.of(2024, 6, 7), LocalDate.of(2024, 6, 7).plusDays(12), LocalDate.of(2024, 6, 19), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book13.getId(), inventory13.getPrice(), LocalDate.of(2024, 7, 15), LocalDate.of(2024, 7, 15).plusDays(14), LocalDate.of(2024, 7, 29), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book14.getId(), inventory14.getPrice(), LocalDate.of(2024, 8, 1), LocalDate.of(2024, 8, 1).plusDays(10), LocalDate.of(2024, 8, 11), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book1.getId(), inventory1.getPrice(), LocalDate.of(2024, 9, 7), LocalDate.of(2024, 9, 7).plusDays(13), LocalDate.of(2024, 9, 20), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book2.getId(), inventory2.getPrice(), LocalDate.of(2024, 10, 3), LocalDate.of(2024, 10, 3).plusDays(14), LocalDate.of(2024, 10, 17), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book3.getId(), inventory3.getPrice(), LocalDate.of(2024, 10, 10), LocalDate.of(2024, 10, 10).plusDays(8), LocalDate.of(2024, 10, 18), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member1.getId(), book4.getId(), inventory4.getPrice(), LocalDate.of(2024, 11, 1), LocalDate.of(2024, 11, 1).plusDays(12), LocalDate.of(2024, 11, 13), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member2.getId(), book5.getId(), inventory5.getPrice(), LocalDate.of(2024, 11, 3), LocalDate.of(2024, 11, 3).plusDays(15), LocalDate.of(2024, 11, 18), LoanStatus.RETURNED),
+                    new Loan(UUID.randomUUID(), member3.getId(), book6.getId(), inventory6.getPrice(), LocalDate.of(2024, 11, 4), LocalDate.of(2024, 11, 4).plusDays(12), LocalDate.of(2024, 11, 16), LoanStatus.RETURNED)
+            };
 
-            loanService.add(loan1);
-            loanService.add(loan2);
-            loanService.add(loan3);
-            loanService.add(loan4);
+            for (Loan loan : loans) {
+                loanService.add(loan);
+                if (loan.getMemberId().equals(member1.getId())) {
+                    member1.getLoans().add(loan.getId());
+                } else if (loan.getMemberId().equals(member2.getId())) {
+                    member2.getLoans().add(loan.getId());
+                } else {
+                    member3.getLoans().add(loan.getId());
+                }
+            }
 
-            // Link loans to members
-            member1.getLoans().add(loan1.getId());
-            member1.getLoans().add(loan2.getId());
-            member2.getLoans().add(loan3.getId());
         } catch (DuplicateItemException e) {
             System.err.println("Error adding sample data: " + e.getMessage());
         }
@@ -336,4 +360,3 @@ public class SampleData {
         }
     }
 }
-

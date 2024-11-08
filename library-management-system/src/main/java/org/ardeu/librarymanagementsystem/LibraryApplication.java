@@ -31,8 +31,13 @@ import java.io.IOException;
 public class LibraryApplication extends Application {
 
     private final ServiceRegistry serviceRegistry = ServiceRegistry.getInstance();
-    private BorderPane rootLayout;
 
+    /**
+     * The main entry point for the JavaFX application.
+     *
+     * @param stage the primary stage for this application
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -89,8 +94,13 @@ public class LibraryApplication extends Application {
                 LibraryApplication.class.getResource("views/loan/add-loan-view.fxml"));
         Pane addLoanView = addLoanFxmlLoader.load();
 
+        FXMLLoader revenueFxmlLoader = new FXMLLoader(
+                LibraryApplication.class.getResource("views/revenue/revenue-view.fxml"));
+        Pane revenueView = revenueFxmlLoader.load();
+
+
         // initial view
-        rootLayout = new BorderPane();
+        BorderPane rootLayout = new BorderPane();
         rootLayout.setCenter(homeView);
 
         // main scene
@@ -113,6 +123,7 @@ public class LibraryApplication extends Application {
         screenViewController.addScreen(ScreenName.ADD_MEMBER, addMemberView, addMemberFxmlLoader.getController());
         screenViewController.addScreen(ScreenName.LOANS, loansView, loansFxmlLoader.getController());
         screenViewController.addScreen(ScreenName.ADD_LOAN, addLoanView, addLoanFxmlLoader.getController());
+        screenViewController.addScreen(ScreenName.REVENUE, revenueView, revenueFxmlLoader.getController());
 
 
         //screenController DI
@@ -152,18 +163,22 @@ public class LibraryApplication extends Application {
         AddLoanViewController addLoanViewController = addLoanFxmlLoader.getController();
         addLoanViewController.setScreenViewController(screenViewController);
 
+
         // Menu bar
         MenuBar menuBar = new SharedMenuBar(screenViewController);
         rootLayout.setTop(menuBar);
 
         //on close
-        stage.setOnCloseRequest(_ -> {
-            serviceRegistry.saveData();
-        });
+        stage.setOnCloseRequest(_ -> serviceRegistry.saveData());
 
         stage.show();
     }
 
+    /**
+     * The main method to launch the JavaFX application.
+     *
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         ServiceRegistry serviceRegistry = ServiceRegistry.getInstance();
 

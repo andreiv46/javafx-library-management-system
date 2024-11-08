@@ -13,12 +13,15 @@ import org.ardeu.librarymanagementsystem.domain.entities.author.Author;
 import org.ardeu.librarymanagementsystem.domain.entities.book.Book;
 import org.ardeu.librarymanagementsystem.domain.entities.inventory.Inventory;
 import org.ardeu.librarymanagementsystem.domain.entities.loan.Loan;
-import org.ardeu.librarymanagementsystem.domain.entities.loan.LoanDTO;
+import org.ardeu.librarymanagementsystem.domain.entities.loan.LoanCreationDTO;
 import org.ardeu.librarymanagementsystem.domain.entities.member.Member;
 import org.ardeu.librarymanagementsystem.ui.components.ErrorAlert;
 import org.ardeu.librarymanagementsystem.ui.components.SuccessAlert;
+import org.ardeu.librarymanagementsystem.ui.viewcontrollers.author.AuthorsViewController;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenName;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenViewController;
+import org.ardeu.librarymanagementsystem.ui.viewcontrollers.genre.GenreViewController;
+import org.ardeu.librarymanagementsystem.ui.viewcontrollers.member.MembersViewController;
 import org.controlsfx.control.ListActionView;
 import org.controlsfx.control.SearchableComboBox;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -29,6 +32,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * AddLoanViewController is responsible for managing the UI and logic for adding a new loan.
+ */
 public class AddLoanViewController {
     private ScreenViewController screenViewController;
     private final MemberController memberController;
@@ -69,6 +75,9 @@ public class AddLoanViewController {
     @FXML
     public DatePicker dueDatePicker;
 
+    /**
+     * Constructs an AddLoanViewController and initializes the necessary data structures.
+     */
     public AddLoanViewController() {
         this.memberController = new MemberController();
         this.members = this.memberController.getAllMembers().getData();
@@ -107,13 +116,20 @@ public class AddLoanViewController {
         loanController = new LoanController();
     }
 
+    /**
+     * Updates the list of available books.
+     */
     public void updateBooksList() {
         clearFields();
         List<Book> availableBooks = this.inventoryController.getAvailableBooks().getData();
         this.booksList.clear();
         this.booksList.addAll(availableBooks);
+        this.sourceLv.getItems().addAll(this.filteredBooks);
     }
 
+    /**
+     * Initializes the controller and sets up the UI components.
+     */
     @FXML
     public void initialize() {
         initializeMemberComboBox();
@@ -126,6 +142,9 @@ public class AddLoanViewController {
         addLoanBtn.setOnAction(_ -> addLoan());
     }
 
+    /**
+     * Initializes the source input filter.
+     */
     private void initializeSourceInputFilter() {
         this.sourceInputFilter.textProperty().addListener((observable, oldValue, newValue) -> {
             this.sourceLv.getItems().clear();
@@ -135,6 +154,9 @@ public class AddLoanViewController {
         });
     }
 
+    /**
+     * Initializes the target input filter.
+     */
     private void initializeTargetInputFilter() {
         this.targetInputFilter.textProperty().addListener((observable, oldValue, newValue) -> {
             this.targetLv.getItems().clear();
@@ -144,6 +166,9 @@ public class AddLoanViewController {
         });
     }
 
+    /**
+     * Initializes the target ListActionView.
+     */
     private void initializeTargetLv() {
         this.targetLv.getItems().addAll(this.selectedBooks);
         this.targetLv.setCellFactory(this::createLvCell);
@@ -164,6 +189,9 @@ public class AddLoanViewController {
                 });
     }
 
+    /**
+     * Initializes the source ListActionView.
+     */
     private void initializeSourceLv() {
         this.sourceLv.getItems().addAll(this.filteredBooks);
         this.sourceLv.setCellFactory(this::createLvCell);
@@ -183,6 +211,11 @@ public class AddLoanViewController {
         this.sourceLv.sideProperty().setValue(Side.RIGHT);
     }
 
+    /**
+     * Adds a book to the target ListActionView.
+     *
+     * @param selectedBook the book to add
+     */
     private void addBookToTargetLv(Book selectedBook) {
         if(selectedBooks.contains(selectedBook)){
             showErrorMessage("Error", "Book is already selected.");
@@ -193,6 +226,9 @@ public class AddLoanViewController {
         targetLv.getItems().addAll(selectedBooks);
     }
 
+    /**
+     * Adds a new loan using the provided input data.
+     */
     private void addLoan() {
         Member member = memberComboBoxInput.getValue();
 
@@ -212,7 +248,7 @@ public class AddLoanViewController {
             return;
         }
 
-        List<LoanDTO> loanDTOS = selectedBooks.stream()
+        List<LoanCreationDTO> loanDTOS = selectedBooks.stream()
                 .map(book -> {
                     Result<Inventory> inventoryResult = inventoryController.getInventoryByBookId(book.getId());
 
@@ -221,7 +257,7 @@ public class AddLoanViewController {
                         return null;
                     }
 
-                    return new LoanDTO(
+                    return new LoanCreationDTO(
                             book.getId(),
                             member.getId(),
                             dueDate,
@@ -232,6 +268,7 @@ public class AddLoanViewController {
 
         Result<List<Loan>> loansResult = this.loanController.addLoansForUser(loanDTOS, member.getId());
         if(loansResult.isSuccess()){
+            updateTables();
             showSuccessMessage("Success", "Loan added successfully.");
             clearFields();
             screenViewController.activate(ScreenName.LOANS);
@@ -242,18 +279,40 @@ public class AddLoanViewController {
         screenViewController.activate(ScreenName.LOANS);
     }
 
+    /**
+     * Updates the tables in the related view controllers.
+     */
+    private void updateTables() {
+        GenreViewController genreViewController = (GenreViewController) screenViewController.getController(ScreenName.GENRES);
+        AuthorsViewController authorsViewController = (AuthorsViewController) screenViewController.getController(ScreenName.AUTHORS);
+        MembersViewController membersViewController = (MembersViewController) screenViewController.getController(ScreenName.MEMBERS);
+        genreViewController.updateTable();
+        authorsViewController.updateTable();
+        membersViewController.updateTable();
+    }
+
+    /**
+     * Clears the input fields.
+     */
     private void clearFields() {
         memberComboBoxInput.setValue(null);
         dueDatePicker.setValue(null);
         selectedBooks.clear();
         targetLv.getItems().clear();
+        sourceLv.getItems().clear();
     }
 
+    /**
+     * Handles the cancel action, clearing input fields and navigating back to the loans screen.
+     */
     private void onCancel() {
         clearFields();
         screenViewController.activate(ScreenName.LOANS);
     }
 
+    /**
+     * Initializes the member combo box.
+     */
     private void initializeMemberComboBox() {
         StringConverter<Member> memberStringConverter =
                 FunctionalStringConverter.to(member -> (Objects.isNull(member)) ? "" :
@@ -262,10 +321,21 @@ public class AddLoanViewController {
         memberComboBoxInput.setItems(this.membersList);
     }
 
+    /**
+     * Sets the ScreenViewController for this controller.
+     *
+     * @param screenViewController the ScreenViewController to set
+     */
     public void setScreenViewController(ScreenViewController screenViewController) {
         this.screenViewController = screenViewController;
     }
 
+    /**
+     * Creates a ListCell for the ListView.
+     *
+     * @param param the ListView parameter
+     * @return a ListCell for the ListView
+     */
     private ListCell<Book> createLvCell(ListView<Book> param) {
         return new ListCell<>() {
             @Override
@@ -281,12 +351,24 @@ public class AddLoanViewController {
         };
     }
 
+    /**
+     * Displays an error message using an ErrorAlert.
+     *
+     * @param message the title of the error message
+     * @param content the content of the error message
+     */
     private void showErrorMessage(String message, String content){
         ErrorAlert errorAlert = new ErrorAlert(message);
         errorAlert.setContent(content);
         errorAlert.showAlert();
     }
 
+    /**
+     * Displays a success message using a SuccessAlert.
+     *
+     * @param message the title of the success message
+     * @param content the content of the success message
+     */
     private void showSuccessMessage(String message, String content){
         SuccessAlert successAlert = new SuccessAlert(message);
         successAlert.setContent(content);

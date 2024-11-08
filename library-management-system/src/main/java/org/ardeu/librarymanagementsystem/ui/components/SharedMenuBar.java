@@ -7,15 +7,26 @@ import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenName;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.base.ScreenViewController;
 import org.ardeu.librarymanagementsystem.ui.viewcontrollers.loan.AddLoanViewController;
 
+/**
+ * SharedMenuBar is a custom MenuBar that provides a shared menu for navigating different screens in the application.
+ */
 public class SharedMenuBar extends MenuBar {
 
     private final ScreenViewController screenViewController;
 
+    /**
+     * Constructs a SharedMenuBar with the specified ScreenViewController.
+     *
+     * @param screenViewController the ScreenViewController to control screen navigation
+     */
     public SharedMenuBar(ScreenViewController screenViewController) {
         this.screenViewController = screenViewController;
         initializeMenu();
     }
 
+    /**
+     * Initializes the menu with various menu items and their actions.
+     */
     private void initializeMenu() {
         // books menu
         Menu booksMenu = new Menu("Books");
@@ -41,11 +52,16 @@ public class SharedMenuBar extends MenuBar {
         MenuItem addAuthorItem = new MenuItem("Add author");
         authorsMenu.getItems().addAll(allAuthorsItem, addAuthorItem);
 
-        // lans menu
+        // loans menu
         Menu loansMenu = new Menu("Loans");
         MenuItem allLoansItem = new MenuItem("All loans");
         MenuItem addLoanItem = new MenuItem("Add loan");
         loansMenu.getItems().addAll(allLoansItem, addLoanItem);
+
+        // analytics menu
+        Menu analyticsMenu = new Menu("Analytics");
+        MenuItem revenueMenuItem = new MenuItem("Revenue");
+        analyticsMenu.getItems().addAll(revenueMenuItem);
 
         // menu item actions
         allBooksItem.setOnAction(_ -> screenViewController.activate(ScreenName.BOOKS));
@@ -62,8 +78,9 @@ public class SharedMenuBar extends MenuBar {
             addLoanViewController.updateBooksList();
             screenViewController.activate(ScreenName.ADD_LOAN);
         });
+        revenueMenuItem.setOnAction(_ -> screenViewController.activate(ScreenName.REVENUE));
 
         // add menus to the menu bar
-        this.getMenus().addAll(booksMenu, genresMenu, authorsMenu, membersMenu, loansMenu);
+        this.getMenus().addAll(booksMenu, genresMenu, authorsMenu, membersMenu, loansMenu, analyticsMenu);
     }
 }

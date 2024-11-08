@@ -5,6 +5,7 @@ module org.ardeu.librarymanagementsystem {
     requires java.xml;
     requires MaterialFX;
     requires org.controlsfx.controls;
+    requires org.apache.commons.csv;
 
 
     opens org.ardeu.librarymanagementsystem to javafx.fxml;
@@ -35,4 +36,9 @@ module org.ardeu.librarymanagementsystem {
     opens org.ardeu.librarymanagementsystem.domain.entities.loan to javafx.base;
     exports org.ardeu.librarymanagementsystem.domain.validators.loan;
     opens org.ardeu.librarymanagementsystem.domain.validators.loan to javafx.base;
+    exports org.ardeu.librarymanagementsystem.ui.viewcontrollers.revenue;
+    opens org.ardeu.librarymanagementsystem.ui.viewcontrollers.revenue to javafx.fxml;
+    exports org.ardeu.librarymanagementsystem.domain.entities.book.mappers to javafx.base;
+    opens org.ardeu.librarymanagementsystem.domain.entities.book.mappers to javafx.base;
+    exports org.ardeu.librarymanagementsystem.domain.exceptions.validation to javafx.base;
 }

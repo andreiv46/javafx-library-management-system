@@ -22,6 +22,9 @@ import org.ardeu.librarymanagementsystem.domain.entities.genre.Genre;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for editing book information.
+ */
 public class EditBookInformationView {
 
     @FXML
@@ -49,12 +52,18 @@ public class EditBookInformationView {
     private final AuthorController authorController = new AuthorController();
     private final GenreController genreController = new GenreController();
 
+    /**
+     * Initializes the controller and sets up the UI components.
+     */
     @FXML
     public void initialize() {
         initializeAuthorComboBox();
         initializeGenreComboBox();
     }
 
+    /**
+     * Initializes the genre combo box with a string converter.
+     */
     private void initializeGenreComboBox() {
         Result<ObservableMap<UUID, Genre>> genresResult = genreController.getAllGenres();
         if (genresResult.isSuccess()) {
@@ -70,6 +79,9 @@ public class EditBookInformationView {
         }
     }
 
+    /**
+     * Initializes the author combo box with a string converter.
+     */
     private void initializeAuthorComboBox() {
         Result<ObservableMap<UUID, Author>> authorsResult = authorController.getAllAuthors();
         if (authorsResult.isSuccess()) {
@@ -85,6 +97,11 @@ public class EditBookInformationView {
         }
     }
 
+    /**
+     * Sets the book details in the view.
+     *
+     * @param book the book to set
+     */
     public void setBook(Book book) {
         titleInput.setText(book.getTitle());
         descriptionInput.setText(book.getDescription());
@@ -98,6 +115,11 @@ public class EditBookInformationView {
                 .ifPresent(genreComboBox::setValue);
     }
 
+    /**
+     * Handles the save button click event.
+     *
+     * @param actionEvent the action event triggered by the save button
+     */
     public void onSaveBtnClick(ActionEvent actionEvent) {
         String title = titleInput.getText();
         String description = descriptionInput.getText();
@@ -113,6 +135,11 @@ public class EditBookInformationView {
         System.out.println("Genre: " + genre.getName());
     }
 
+    /**
+     * Handles the cancel button click event.
+     *
+     * @param actionEvent the action event triggered by the cancel button
+     */
     public void onCancelBtnClick(ActionEvent actionEvent) {
     }
 }
